@@ -1,0 +1,189 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "spacing": 4,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    
+    "modules-left": ["custom/power","hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray","group/sysinfo","custom/cava","pulseaudio","custom/updates", "custom/swaync"],
+
+    // POWER
+    "custom/power": {
+        "format": "⏻",
+        "exec": "echo ; echo 󰟡 power",
+        "on-click": "~/.config/waybar/scripts/wlogout.sh",
+        "interval": 86400, // once every day
+        "tooltip": true,
+    },
+
+    // WORKSPACES
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10"
+        },
+        "persistent-workspaces": {
+            "*": 5
+        },
+        "on-click": "activate"
+    },
+
+    // TITLE
+    "hyprland/window": {
+        "format": "󰣆 {title}",
+        "max-length": 40,
+        "separate-outputs": false,
+        "rewrite": {
+        "^.*( — LibreWolf|LibreWolf)$": "󰈹 LibreWolf",
+        "^.*(Brave)$": " Brave",
+        "(.*) — Mozilla Firefox": " Firefox",
+        "^.*v( .*|$)": " Neovim",
+        "^.*~$": "󰄛 Kitty",
+        "(.*) ": " Empty",
+        "^.*pdf( .*|$)": "",
+        "^.*(- Mousepad)$" :" $1"
+        }
+    },
+
+    // DATE
+    "clock": {
+        "format": "{:%H:%M  %a %d %b}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    // SYSTEM INFO
+    "group/sysinfo": {
+        "orientation": "inherit",
+        "drawer": {
+        "transition-duration": 300,
+        "transition-left-to-right": false
+        },
+        "modules": ["custom/arrow-left", "cpu", "memory", "custom/nvidia", "network"]
+    },
+
+    "custom/arrow-left": {
+        "format": "",
+        "tooltip": false,
+    },
+
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": true,
+        "interval": 2,
+        "on-click": "htop"
+    },
+
+    "memory": {
+        "format": " {percentage}%",
+        "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G"
+    },
+
+    "custom/nvidia": {
+        "exec": "nvidia-smi --query-gpu=utilization.gpu,temperature.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\), \\([0-9]\\+\\)/\\1% /g'",
+        "format": "🖥️ {}",
+        "interval": 2,
+        "tooltip": true,
+        "tooltip-format": "Nvidia: {}"
+    },
+
+    // NETWORK
+    "network": {
+        "format": "{icon}",
+        "format-icons": {
+            "wifi": ["󰤨"],
+            "ethernet": ["󰈁"],
+            "disconnected": [""],
+            },
+        "interval": 5,
+        "format-wifi": "󰤨 {bandwidthDownBits}",
+        "format-ethernet": "󰈀 {bandwidthDownBits}",
+        "format-disconnected": " Disconnected",
+        "tooltip-format": "{ipaddr}",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)   \n{ipaddr} | {frequency} MHz{icon} ",
+        "tooltip-format-ethernet": "{ifname} 󰈀 \n{ipaddr} | {frequency} MHz{icon} ",
+        "tooltip-format-disconnected": "Not Connected to any type of Network",
+        "tooltip": true
+    },
+
+    // AUDIO
+    "pulseaudio": {
+        "format": "  {volume}%",
+        "format-muted": " muted",
+        "on-click": "pamixer -t",
+        "on-click-right": "pavucontrol -t 3",
+        "smooth-scrolling-threshold": 1
+    },
+
+    // CAVA
+    "custom/cava": {
+        "format": "{}",
+        "exec": "~/.config/waybar/scripts/cava.sh",
+	"tooltip": false
+    },
+
+    // TRAY
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    },
+
+    // NOTIFICATION
+    "custom/swaync": {
+        "tooltip": true,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='red'><sup></sup></span>",
+            "none": "",
+            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-none": "",
+            "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-none": ""
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "sleep 0.1 && swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+
+    // UPDATES
+    "custom/updates": {
+        "format": "  {}",
+        "interval": "once",
+        "exec": "checkupdates | wc -l",
+        "exec-if": "exit 0",
+        "on-click": "kitty -e sh -c 'sudo pacman -Syu; echo Done! Press enter to exit; read'",
+        "signal": 8,
+        "tooltip": true,
+        "tooltip-format": "{} updates available"
+    }
+}

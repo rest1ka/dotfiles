@@ -1,0 +1,10 @@
+
+/* Main Config (long) - emoji */
+
+@import "~/.config/rofi/config-long.rasi" 
+
+/* ---- Entry ---- */
+entry {
+  width: 45%;
+  placeholder: "💫 Cari Emoji  -- (Copy: Click/Return | Paste: Ctrl + V)";
+}
