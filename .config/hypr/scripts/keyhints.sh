@@ -42,4 +42,4 @@ GDK_BACKEND=$BACKEND yad \
 "" "" "" \
 "CTRL + ALT + Delete" "Hyprland Exit" "(NOTE: Hyprland Will exit immediately)" \
 "" "" "" \
-"More tips:" "https://github.com/Restika/dotfiles" ""
+"More tips:" "https://github.com/rest1ka/dotfiles" ""
